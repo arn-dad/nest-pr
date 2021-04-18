@@ -1,0 +1,12 @@
+{
+  "workbench.colorCustomizations": {
+    "statusBar.background": "#71a9a9",
+    "statusBar.foreground": "#15202b",
+    "statusBarItem.hoverBackground": "#579090"
+  },
+  "peacock.color": "#71a9a9",
+  "cSpell.words": [
+    "nestjs",
+    "postgres"
+  ]
+}
