@@ -7,6 +7,7 @@ async function start() {
   const app = await NestFactory.create(AppModule);
 
   const config = new DocumentBuilder()
+    .addBearerAuth()
     .setTitle('Nest API')
     .setDescription('User Service Documentation')
     .setVersion('1.0.0')

@@ -1,6 +1,15 @@
 import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { Roles } from 'src/auth/roles-auth.decorator';
+import { RolesGuard } from 'src/auth/roles.guard';
+import { AddRoleDTO } from './dto/add-role.dto';
+import { BlockUserDTO } from './dto/block-user.dto';
 import { CreateUserDTO } from './dto/create-user.dto';
 import { User } from './users.model';
 import { UsersService } from './users.service';
@@ -20,8 +29,30 @@ export class UsersController {
   @ApiOperation({ summary: 'Get all users' })
   @ApiResponse({ status: 200, type: [User] })
   @UseGuards(JwtAuthGuard)
+  @Roles('ADMIN')
+  @UseGuards(RolesGuard)
   @Get()
   getAll() {
     return this.userService.getUsers();
+  }
+
+  @ApiOperation({ summary: 'Add new role' })
+  @ApiResponse({ status: 200 })
+  @ApiBearerAuth()
+  @Roles('ADMIN')
+  @UseGuards(RolesGuard)
+  @Post('/role')
+  addRole(@Body() dto: AddRoleDTO) {
+    return this.userService.addRole(dto);
+  }
+
+  @ApiOperation({ summary: 'Block user' })
+  @ApiResponse({ status: 200 })
+  @ApiBearerAuth()
+  @Roles('ADMIN')
+  @UseGuards(RolesGuard)
+  @Post('/block')
+  blockUser(@Body() dto: BlockUserDTO) {
+    return this.userService.blockUser(dto);
   }
 }
